@@ -1,0 +1,205 @@
+﻿<UserControl x:Class="Accounting.Views.JurnalView.JurnalWindow"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Accounting.Views.JurnalView"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="DarkBlue"/>
+        </Style>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid Margin="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" MinWidth="200" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="1.5*" MinWidth="300" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" MinWidth="250" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="#F9F9F9" Padding="10" CornerRadius="5">
+            <StackPanel>
+                <TextBlock Text="PENCARIAN" FontWeight="Bold" Margin="0,0,0,10"/>
+                <DatePicker SelectedDate="{Binding TglAwal}" Margin="0,5"/>
+                <DatePicker SelectedDate="{Binding TglAkhir}" Margin="0,5"/>
+                <Button Content="Tampilkan Data" Command="{Binding TampilkanDataCommand}" Margin="0,10" Padding="5"/>
+
+                <Separator Margin="0,15"/>
+                <Button Content="➕ JURNAL BARU" Command="{Binding TambahJurnalCommand}" 
+                        Background="#28A745" Foreground="White" Padding="10" FontWeight="Bold"/>
+            </StackPanel>
+        </Border>
+
+        <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="#E0E0E0" Margin="2,0"/>
+
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#F8F9FA">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="DAFTAR JURNAL" FontWeight="Bold" FontSize="20" FontFamily="Arial" Grid.Column="0" 
+                           Foreground="#555555" VerticalAlignment="Center" Margin="10,0,10,0"/>
+                <Button Content="🔄 Replace Text" Grid.Column="1"
+                        Command="{Binding ToggleReplacePanelCommand}"
+                        Margin="10,0,0,0" Padding="8,4" Background="#007BFF" Foreground="White" 
+                        FontWeight="SemiBold" BorderThickness="0">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Border Grid.Column="2" Background="White" BorderBrush="#DDDDDD" 
+                        BorderThickness="1" CornerRadius="12" Margin="5,3,10,3" 
+                        HorizontalAlignment="Right" Width="180">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="🔍" VerticalAlignment="Center" Margin="8,0,5,0" FontSize="10"
+                                   
+                                   Foreground="Gray"/>
+                        <TextBox Grid.Column="1" Text="{Binding WhatToSearch, UpdateSourceTrigger=PropertyChanged}" 
+BorderThickness="0" Background="Transparent" 
+VerticalContentAlignment="Center" FontSize="11" Height="22"
+Tag="Cari .."/>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Border Grid.Row="1" Background="#F1F3F5" BorderBrush="#CED4DA" BorderThickness="0,1"
+                    Visibility="{Binding IsReplacePanelOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Padding="10,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="Teks Dicari:" VerticalAlignment="Center" Margin="5,0" FontSize="12"/>
+                    <TextBox Grid.Column="1" Text="{Binding TextToFind, UpdateSourceTrigger=PropertyChanged}" 
+                             Height="24" VerticalContentAlignment="Center" Margin="5,0"/>
+
+                    <TextBlock Grid.Column="2" Text="Ganti Menjadi:" VerticalAlignment="Center" Margin="15,0,5,0" FontSize="12"/>
+                    <TextBox Grid.Column="3" Text="{Binding TextToReplace, UpdateSourceTrigger=PropertyChanged}" 
+                             Height="24" VerticalContentAlignment="Center" Margin="5,0"/>
+
+                    <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0">
+                        <Button Content="Replace Semua Keterangan" 
+                                Command="{Binding ExecuteReplaceCommand}"
+                                Padding="12,0" Height="24" Background="#28A745" Foreground="White" 
+                                BorderThickness="0" FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2" Background="#F8F9FA" Padding="10,5" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Content="Pilih Semua" 
+                              IsChecked="{Binding IsAllSelected, UpdateSourceTrigger=PropertyChanged}" 
+                              VerticalAlignment="Center" 
+                              FontWeight="SemiBold" 
+                              Margin="5,0,15,0"/>
+
+                    <Button Content="🗑️ Hapus Yang Dipilih" 
+                            Command="{Binding HapusJurnalTerpilihCommand}"
+                            Background="#DC3545" 
+                            Foreground="White" 
+                            Padding="8,4" 
+                            FontWeight="SemiBold" 
+                            BorderThickness="0">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <DataGrid Grid.Row="3" ItemsSource="{Binding ListUniqueJournal}" SelectedItem="{Binding SelectedHeader}"
+                      AutoGenerateColumns="False" IsReadOnly="False" CanUserAddRows="False">
+                <DataGrid.Columns>
+
+                    <DataGridCheckBoxColumn Width="50" Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}">
+                        <DataGridCheckBoxColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridCheckBoxColumn.HeaderStyle>
+
+                        <DataGridCheckBoxColumn.ElementStyle>
+                            <Style TargetType="CheckBox">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.25" ScaleY="1.25"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGridCheckBoxColumn.ElementStyle>
+
+                        <DataGridCheckBoxColumn.EditingElementStyle>
+                            <Style TargetType="CheckBox">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="LayoutTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.25" ScaleY="1.25"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGridCheckBoxColumn.EditingElementStyle>
+                    </DataGridCheckBoxColumn>
+                    <DataGridTemplateColumn Width="60" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="..." Padding="5,2" Background="#FFC107" BorderThickness="0"
+                                        Command="{Binding DataContext.EditJurnalCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTextColumn Header="Tanggal" Binding="{Binding JournalDate, StringFormat=dd-MMM-yyyy}" Width="90" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="No. Bukti" Binding="{Binding RefNo}" Width="150" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Keterangan" Binding="{Binding Description}" Width="*" ElementStyle="{StaticResource TextStyleWrapping}" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <GridSplitter Grid.Column="3" Width="4" HorizontalAlignment="Stretch" Background="#E0E0E0" Margin="2,0"/>
+
+        <DataGrid Grid.Column="4" ItemsSource="{Binding LstDetail}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Akun" Binding="{Binding AccountCode}" Width="80"/>
+                <DataGridTextColumn Header="Nama Akun" Binding="{Binding AccountName}" Width="*"/>
+                <DataGridTextColumn Header="Debet" Binding="{Binding Debet, StringFormat=N0}" Width="90" ElementStyle="{StaticResource TextAngka}"/>
+                <DataGridTextColumn Header="Kredit" Binding="{Binding Credit, StringFormat=N0}" Width="90" ElementStyle="{StaticResource TextAngka}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

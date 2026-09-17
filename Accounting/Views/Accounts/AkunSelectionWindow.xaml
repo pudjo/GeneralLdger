@@ -1,0 +1,131 @@
+﻿<Window x:Class="Accounting.Views.Account.AkunSelectionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Accounting.Views.Account"
+        mc:Ignorable="d"
+        Title="AkunSelectionWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+            <!-- Kotak Pencarian -->
+            <Grid Grid.Row="0" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>                
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" FontWeight="Bold" Text="Pencarian Akun" FontSize="30"/>
+                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                 Background="White" 
+                 BorderBrush="#AAAAAA"
+                         Height="30"
+                 BorderThickness="1"
+                 VerticalContentAlignment="Center"
+                 Padding="5" 
+                 Grid.Column="1" 
+             Margin="0,0,5,0">
+                    <!-- Menjalankan pencarian saat menekan Enter -->
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                    </TextBox.InputBindings>
+
+                </TextBox>
+
+                <Button Grid.Column="2" Content=" Cari " 
+                Command="{Binding SearchCommand}" 
+                Padding="15,5" Background="#3498DB" Foreground="White" BorderThickness="0"/>
+            </Grid>
+
+            <TreeView Grid.Row="1" ItemsSource="{Binding AkunTreeList}"           Background="White" 
+                      SelectedItemChanged="TreeView_SelectedItemChanged"
+          BorderBrush="#DDDDDD">
+
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        <Setter Property="FontWeight" Value="Normal" />
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <!-- Kita pasang ContextMenu di StackPanel utama template -->
+                        <StackPanel Orientation="Horizontal" 
+                    Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=TreeView}}">
+
+                            <StackPanel.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Copy Id" 
+  Command="{Binding PlacementTarget.Tag.CopyID, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+  CommandParameter="{Binding}" />
+                                    <MenuItem Header="Copy Nama" 
+Command="{Binding PlacementTarget.Tag.CopyName, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+CommandParameter="{Binding}" />
+
+
+                                    <MenuItem Header="Tampilkan Detail" 
+                              Command="{Binding PlacementTarget.Tag.ShowDetailCommand, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                              CommandParameter="{Binding}" />
+                                    
+                                    
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
+
+                            <!-- Bagian Teks dengan Style untuk Bold -->
+                            <TextBlock Text="{Binding Id}" Margin="0,0,5,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <!-- Default: Bold untuk ID agar tegas -->
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMatch}" Value="True">
+                                                <!-- Jika cocok pencarian, warna berubah jadi Biru -->
+                                                <Setter Property="Foreground" Value="Blue"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <TextBlock Text="{Binding Name}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontWeight" Value="Normal"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMatch}" Value="True">
+                                                <!-- Jika cocok pencarian, teks jadi Bold & Biru -->
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                <Setter Property="Foreground" Value="Blue"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+
+        
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <TextBlock Text="{Binding SelectedAkun.Id }" FontWeight="Bold" FontSize="20"/>
+            <TextBlock Text="{Binding SelectedAkun.Name }" FontWeight="Regular" FontSize="20"/>
+            
+            <Button Content="Pilih" Click="BtnPilih_Click" Width="80" Margin="0,0,10,0"/>
+            <Button Content="Batal" IsCancel="True" Width="80"/>
+        </StackPanel>
+    </Grid>
+
+</Window>

@@ -1,0 +1,132 @@
+﻿<Window x:Class="Accounting.Views.JurnalView.JurnalEntryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Accounting.Views.JurnalView"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="JurnalEntryWindow" Height="600" Width="800">
+
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="White" CornerRadius="5" Padding="15" Margin="0,0,0,10" BorderBrush="#DDD" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="No. Bukti" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                <TextBox Grid.Column="1" Text="{Binding Header.RefNo}" Margin="0,0,20,10" Padding="5"/>
+
+                    <TextBlock Grid.Column="2" Text="Tanggal" VerticalAlignment="Center" Margin="0,0,10,10"/>
+                <DatePicker Grid.Column="3" SelectedDate="{Binding Header.JournalDate}" Margin="0,0,0,10"/>
+
+                    <TextBlock Grid.Row="1" Text="Keterangan" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding Header.Description}" Padding="5"/>
+                </Grid>
+            </Border>
+
+            <DataGrid Grid.Row="1" ItemsSource="{Binding DaftarDetail}" AutoGenerateColumns="False" 
+                  CanUserAddRows="True" Background="White" GridLinesVisibility="Horizontal">
+                <DataGrid.Columns>
+
+                <DataGridTemplateColumn Header="Kode Akun" Width="150">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Text="{Binding AccountCode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+         FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}"/>
+                                <Button Grid.Column="1" Content="..." Width="30"  
+        Command="{Binding DataContext.CariAkunCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+        CommandParameter="{Binding Mode=OneWay}"/>
+                                
+
+                                
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding AccountCode, UpdateSourceTrigger=PropertyChanged}" FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Nama Akun" Binding="{Binding AccountName}" Width="*" IsReadOnly="True"/>
+
+                <DataGridTextColumn Header="Debet" 
+                    Binding="{Binding Debet, StringFormat=N2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                    Width="120" 
+                    ElementStyle="{StaticResource TextAngka}">
+                    
+                <DataGridTextColumn.EditingElementStyle>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Text" Value="{Binding Debet, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <EventSetter Event="TextBox.TextChanged" Handler="AbaikanDanUpdateTotal"/>
+                        </Style>
+                </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+
+
+
+                <DataGridTextColumn Header="Kredit" 
+                    Binding="{Binding Credit, StringFormat=N2, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                    Width="120" 
+                    ElementStyle="{StaticResource TextAngka}">
+
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Text" Value="{Binding Credit, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                            <EventSetter Event="TextBox.TextChanged" Handler="AbaikanDanUpdateTotal"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+            </DataGrid>
+
+            <Border Grid.Row="2" Background="#EEE" Padding="10" Margin="0,5,0,10">
+                <DockPanel>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                        <TextBlock Text="Selisih:" VerticalAlignment="Center" Margin="20,0,5,0"/>
+                    
+                    <TextBlock Text="{Binding Selisih, StringFormat=N2}" FontWeight="Bold" 
+                               FontSize="30"
+           Foreground="{Binding SelisihColor}" VerticalAlignment="Center"/>
+                </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Total Debet:" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding TotalDebet, StringFormat=N2}" Margin="5,0,20,0" FontWeight="Bold"/>
+                        <TextBlock Text="Total Kredit:" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding TotalKredit, StringFormat=N2}" Margin="5,0,0,0" FontWeight="Bold"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Hapus Jurnal" Command="{Binding HapusCommand}" Width="100" Margin="0,0,10,0" Background="#DC3545" Foreground="White"/>
+                <Button Content="Simpan" Command="{Binding SimpanCommand}" Width="100" Background="#28A745" Foreground="White"/>
+                <Button Content="Batal" IsCancel="True" Width="80" Margin="10,0,0,0"/>
+            </StackPanel>
+        </Grid>
+    
+</Window>

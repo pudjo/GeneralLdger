@@ -1,0 +1,127 @@
+﻿<UserControl x:Class="Accounting.Views.Controls.DateRangePickerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                         xmlns:local="clr-namespace:Accounting.Views.Controls"
+             xmlns:conv="clr-namespace:Accounting.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="800">
+
+    <!-- Resources: Define converter di sini -->
+    <UserControl.Resources>
+        <!-- Built-in WPF Converter -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <!-- Custom Converters -->
+        <conv:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <conv:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+        <conv:MonthToIndexConverter x:Key="MonthToIndexConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="White" Margin="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Row 0: Option Buttons (Bulanan / Harian) -->
+        <!-- Row 0: Option Buttons (Bulanan / Harian) -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15" Background="#F5F5F5" >
+            <TextBlock Text="Pilih Periode:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,15,0" FontSize="12"/>
+
+            <!-- Radio Button Bulanan: Ikat langsung secara TwoWay -->
+
+            <RadioButton 
+    Content="Bulanan" 
+    IsChecked="{Binding IsMonthlyMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    VerticalAlignment="Center"
+    Margin="0,0,20,0"
+    FontSize="12"
+    GroupName="PeriodeGroup"/>
+
+            <!-- Radio Button Harian -->
+            <RadioButton 
+    Content="Harian" 
+    IsChecked="{Binding IsMonthlyMode, Converter={StaticResource InverseBooleanConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    VerticalAlignment="Center"
+    FontSize="12"
+    GroupName="PeriodeGroup"/>
+            
+
+        </StackPanel>
+
+        
+
+        <!-- Row 1: Monthly Mode - ComboBox untuk pilih bulan -->
+        <StackPanel 
+            Grid.Row="1" 
+            Orientation="Horizontal"
+            Visibility="{Binding IsMonthlyMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Margin="0,0,0,0"
+            
+            Background="#FAFAFA">
+
+            <TextBlock 
+                Text="Pilih Bulan:" 
+                VerticalAlignment="Center" 
+                Margin="0,0,10,0"
+                FontWeight="Bold"
+                FontSize="12"/>
+
+            <ComboBox 
+                ItemsSource="{Binding MonthList}"
+                SelectedIndex="{Binding SelectedMonthIndex, Mode=TwoWay}"
+                Width="250"
+                Height="32"
+                VerticalAlignment="Center"
+                Padding="8,5"
+                FontSize="12"/>
+        </StackPanel>
+
+        <!-- Row 1: Daily Mode - DatePicker untuk FirstDate dan EndDate -->
+        <!-- PENTING: Gunakan InverseBooleanToVisibilityConverter bukan InverseBooleanConverter -->
+        <StackPanel 
+            Grid.Row="1" 
+            Orientation="Horizontal"
+            Visibility="{Binding IsMonthlyMode, Converter={StaticResource InverseBooleanToVisibilityConverter}}"
+            Margin="0,0,0,0"
+            
+            Background="#FAFAFA">
+
+            <!-- First Date Label -->
+            <TextBlock 
+                Text="Dari Tanggal:" 
+                VerticalAlignment="Center" 
+                Margin="0,0,10,0"
+                FontWeight="Bold"
+                FontSize="12"/>
+
+            <!-- First Date Picker -->
+            <DatePicker 
+                SelectedDate="{Binding FirstDate, Mode=TwoWay}"
+                Width="150"
+                Height="32"
+                VerticalAlignment="Center"
+                Padding="8,5"
+                FontSize="12"/>
+
+            <!-- End Date Label -->
+            <TextBlock 
+                Text="Sampai Tanggal:" 
+                VerticalAlignment="Center" 
+                Margin="20,0,10,0"
+                FontWeight="Bold"
+                FontSize="12"/>
+
+            <!-- End Date Picker -->
+            <DatePicker 
+                SelectedDate="{Binding EndDate, Mode=TwoWay}"
+                Width="150"
+                Height="32"
+                VerticalAlignment="Center"
+                Padding="8,5"
+                FontSize="12"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,63 @@
+﻿ <UserControl x:Class="Accounting.Views.Inventory.JenisTreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"              
+             xmlns:helpers="clr-namespace:Accounting.Helpers"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Accounting.Views.Inventory"
+             mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="300">
+    <UserControl.Resources>
+        <!-- Expose the UserControl DataContext (the ViewModel) to ContextMenu via BindingProxy -->
+        <helpers:BindingProxy x:Key="VmProxy" Data="{Binding}" />
+    </UserControl.Resources>
+
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8">
+            <Button Content="Tambah" Width="80" Margin="0,0,8,0" Command="{Binding AddCommand}"/>
+            <Button Content="Refresh" Width="80" Command="{Binding RefreshCommand}"/>
+        </StackPanel>
+
+        <TreeView Grid.Row="1" ItemsSource="{Binding TreeItems}" Padding="10,20,10,10" SelectedItemChanged="TreeView_SelectedItemChanged">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="True"/>
+                    <!-- apply attached behavior to auto-select on right click -->
+                    <Setter Property="helpers:TreeViewItemBehaviors.SelectOnRightClick" Value="True" />
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <!-- Bind command to ViewModel via BindingProxy (no code-behind commands needed) -->
+                                <MenuItem Header="Tambah Sub-Jenis"
+                                          Command="{Binding Data.AddChildCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <MenuItem Header="Edit / Detail"
+                                          Command="{Binding Data.EditCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                                <Separator/>
+                                <MenuItem Header="Hapus"
+                                          Command="{Binding Data.DeleteCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"/>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TreeView.ItemContainerStyle>
+
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate  ItemsSource="{Binding Children}">
+                    <TextBlock VerticalAlignment="Center">
+            <Run Text="{Binding Kode, Mode=OneWay}" FontWeight="Bold" FontSize="20" />
+            <Run Text="  " />
+            <Run FontSize="20" Text="{Binding Nama, Mode=OneWay}" />
+                    </TextBlock>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            
+        </TreeView>
+    </Grid>
+</UserControl>

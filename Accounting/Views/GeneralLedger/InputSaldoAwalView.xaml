@@ -1,0 +1,207 @@
+﻿<UserControl x:Class="Accounting.Views.GeneralLedger.InputSaldoAwalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             
+             xmlns:local="clr-namespace:Accounting.Views.GeneralLedger"
+             xmlns:localClickConverter="clr-namespace:Accounting.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="#F8F9FA">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="420"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" FontWeight="Bold" Text="Pencarian Akun" FontSize="18" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" 
+                         Background="White" 
+                         BorderBrush="#AAAAAA"
+                         Height="30"
+                         BorderThickness="1"
+                         VerticalContentAlignment="Center"
+                         Padding="5" 
+                         Grid.Column="1" 
+                         Margin="0,0,5,0">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding SearchCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button Grid.Column="2" Content=" Cari " 
+                        Command="{Binding SearchCommand}" 
+                        Padding="15,5" Background="#3498DB" Foreground="White" BorderThickness="0"/>
+            </Grid>
+
+            <TreeView Grid.Row="1" ItemsSource="{Binding AkunTreeList}" Background="White" 
+          SelectedItemChanged="TreeView_SelectedItemChanged"
+          BorderBrush="#DDDDDD" Margin="5,0,0,0">
+
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                        <Setter Property="FontWeight" Value="Normal" />
+
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="FontWeight" Value="Bold" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        
+                        <StackPanel Orientation="Horizontal" 
+                        Background="Transparent" MouseDown="StackPanel_MouseDown" Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=TreeView}}">
+                            
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+                            <TextBlock Text="{Binding Id}" Margin="0,0,5,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMatch}" Value="True">
+                                                <Setter Property="Foreground" Value="Blue"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <TextBlock Text="{Binding Name}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontWeight" Value="Normal"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMatch}" Value="True">
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                <Setter Property="Foreground" Value="Blue"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <TextBlock Text="Silakan double klik pada Akun yang akan dimasukkan ke saldoawal " FontWeight="Bold" FontSize="14" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                
+            </StackPanel>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="#E0E0E0"/>
+
+        <Grid Grid.Column="2" Margin="15,10,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="#2D2D30" CornerRadius="4" Padding="15,10" Margin="0,0,0,10">
+                <TextBlock Text="{Binding Description}" Foreground="White" FontSize="16" FontWeight="SemiBold"/>
+                
+            </Border>
+            <Grid Grid.Row="1" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Content="Panggil Data" Command="{Binding CallDataSaldoAwal}"  Width="80" Margin="0,0,5,0" Height="28"/>
+                
+                
+                <TextBlock Grid.Column="1" Text="Filter Tabel:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="SemiBold" Foreground="#555555"/>
+                <TextBox Grid.Column="2" Text="{Binding DataGridSearchText, UpdateSourceTrigger=PropertyChanged}" 
+                     Height="28" VerticalContentAlignment="Center" Padding="5,0"
+                     Background="White" BorderBrush="#CCCCFF"/>
+
+            </Grid>
+
+            <DataGrid x:Name="dgSaldoAwal" Grid.Row="2" 
+                      AutoGenerateColumns="False" 
+                      CanUserAddRows="False"
+                      Background="White"
+                      BorderBrush="#CCCCFF"
+                      RowHeaderWidth="30"
+                      GridLinesVisibility="All"
+                      HorizontalGridLinesBrush="#EFEFEF"
+                      VerticalGridLinesBrush="#EFEFEF"
+                      ItemsSource="{Binding SaldoAwalRows}"
+                      
+                      FontSize="13">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="20" IsReadOnly="True" FontWeight="SemiBold"/>
+                    <DataGridTextColumn Header="Kode Akun" Binding="{Binding AccountCode}" Width="120" IsReadOnly="True" FontWeight="SemiBold"/>
+                    <DataGridTextColumn Header="Nama Akun" Binding="{Binding AccountName}" Width="250" IsReadOnly="True"/>
+
+                    <DataGridTextColumn Header="Debet (Rp)" Binding="{Binding Debet, StringFormat={}{0:N2}, 
+                        UpdateSourceTrigger=PropertyChanged}" Width="150">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Kredit (Rp)" Binding="{Binding Credit, StringFormat={}{0:N2}, UpdateSourceTrigger=PropertyChanged}" Width="150">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Border Grid.Row="3" Background="#EAEAEA" BorderBrush="#CCCCFF" BorderThickness="1,0,1,1" Padding="10,8">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="140"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="TOTAL SEMENTARA :" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="#333333"/>
+
+                    <TextBlock Grid.Column="1" Text="{Binding TotalDebet, StringFormat={}{0:N2}}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0,0,5,0" FontSize="13" Foreground="DarkGreen"/>
+
+                    <TextBlock Grid.Column="2" Text="{Binding TotalCredit, StringFormat={}{0:N2}}" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0,0,5,0" FontSize="13" Foreground="DarkRed"/>
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+                <Button Content="Simpan Saldo Awal" Command="{Binding SimpanSaldoAwalCommand}" Width="160" Height="35" Background="#008080" Foreground="White" FontWeight="Bold"
+                        IsEnabled="{Binding IsDataReadyToSave}"
+                        BorderThickness="0"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</UserControl>

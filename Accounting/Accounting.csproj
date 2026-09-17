@@ -1,0 +1,82 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfContained>true</IncludeNativeLibrariesForSelfContained>
+    <IncludeAllContentForSelfContained>true</IncludeAllContentForSelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Users\**" />
+    <EmbeddedResource Remove="Views\Users\**" />
+    <None Remove="Views\Users\**" />
+    <Page Remove="Views\Users\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DTO\JurnalDetailDTO.cs" />
+    <Compile Remove="Repositories\SQLLite\ConnectionFactory.cs" />
+    <Compile Remove="Repositories\SQLLite\Repository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Images\key-icon.png" />
+    <None Remove="Assets\Images\leaf.jpg" />
+    <None Remove="Assets\Images\user-icon.png" />
+    <None Remove="Assets\logo.png" />
+    <None Remove="Database\accounting1.db" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Database\accounting1.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Dapper" Version="2.1.72" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="5.1.2" />
+    <PackageReference Include="FluentValidation" Version="10.4.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.3.0" />
+    <PackageReference Include="MaterialDesignThemes.MahApps" Version="5.3.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.8" />
+    <PackageReference Include="Microsoft.ML" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
+    <PackageReference Include="MiniExcel" Version="1.43.1" />
+    <PackageReference Include="QuestPDF" Version="2026.9.0" />
+    <PackageReference Include="Serilog" Version="4.3.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\NewFolder\" />
+    <Folder Include="Repositories\Master\" />
+    <Folder Include="Repositories\SQLLite\Master\NewFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\Images\key-icon.png" />
+    <Resource Include="Assets\Images\leaf.jpg" />
+    <Resource Include="Assets\Images\user-icon.png" />
+    <Resource Include="Assets\logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>

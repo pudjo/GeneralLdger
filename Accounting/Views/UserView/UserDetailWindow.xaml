@@ -1,0 +1,54 @@
+﻿<Window x:Class="Accounting.Views.UserView.UserDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Accounting.Views.UserView"
+        mc:Ignorable="d"
+        Title="User Detail" Height="450" 
+        WindowStartupLocation="CenterScreen"
+        Width="800">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Judul -->
+            <RowDefinition Height="*"/>
+            <!-- Input Form -->
+            <RowDefinition Height="Auto"/>
+            <!-- Batons -->
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding WindowTitle}" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Top">
+            <TextBlock Text="User ID" Margin="0,5,0,2" FontWeight="SemiBold"/>
+            <TextBox Text="{Binding SelectedUser.Id, UpdateSourceTrigger=PropertyChanged}" IsEnabled="false"/>
+            <!-- IsEnabled false jika dalam mode edit agar UserID tidak bisa diubah -->
+            <TextBox Text="{Binding SelectedUser.UserID, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsAddMode}"/>
+
+            <TextBlock Text="Nama" Margin="0,10,0,2" FontWeight="SemiBold"/>
+            <TextBox Text="{Binding SelectedUser.Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Text="Email" Margin="0,10,0,2" FontWeight="SemiBold"/>
+            <TextBox Text="{Binding SelectedUser.Email, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Text="No. Handphone" Margin="0,10,0,2" FontWeight="SemiBold"/>
+            <TextBox Text="{Binding SelectedUser.HandPhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
+
+                  <TextBlock Text="Status" Margin="0,10,0,2" FontWeight="SemiBold"/>
+            <ComboBox SelectedIndex="{Binding SelectedUser.Status}">
+                <ComboBoxItem Content="Non-Aktif (0)"/>
+                <ComboBoxItem Content="Aktif (1)"/>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Tombol Simpan & Batal -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+
+            <Button Content="{Binding SaveButtonText}"  Background="LightBlue" Command="{Binding SaveCommand}" Width="75" Height="28" Margin="0,0,10,0" />
+
+            <Button Content="Hapus" Width="75" Height="28" Command="{Binding DeleteCommand}" Background="DarkOrange" Foreground="White"/>
+            <Button Content="Tutup" Width="75" Height="28" Command="{Binding CloseCommand}" Background= "LightGray" Margin="0,0,10,0" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,177 @@
+﻿<UserControl x:Class="Accounting.Views.JurnalImportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:conv="clr-namespace:Accounting.Converters"
+             xmlns:local="clr-namespace:Accounting.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="White"
+             >
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <conv:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <!-- For the middle, devide to 3 rows, first for second for gridview(main) to display data, third row  -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>        
+        </Grid.RowDefinitions>        
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
+            <Button Content="Pilih File Excel" Command="{Binding PilihFileCommand}" Padding="15,5" Background="#007ACC" Foreground="White" BorderThickness="0"/>
+            <TextBlock Text="Pilih Sheet:" VerticalAlignment="Center" Margin="15,0,5,0" Visibility="{Binding IsSheetVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <ComboBox ItemsSource="{Binding DaftarSheet}" SelectedItem="{Binding SheetTerpilih}" Width="150" VerticalAlignment="Center" Visibility="{Binding IsSheetVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding NamaFileTerpilih}" VerticalAlignment="Center" Margin="15,0" Foreground="DimGray" FontStyle="Italic"/>
+
+            <TextBlock Text="Total Debit:" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" Margin="10,0,5,0"/>
+            <TextBlock Text="{Binding JumlahDebit, StringFormat='{}{0:C0}', ConverterCulture='id-ID'}" VerticalAlignment="Center" Foreground="DarkBlue"/>
+
+            <TextBlock Text="Total Kredit:" Foreground="Black" FontWeight="Bold" VerticalAlignment="Center" Margin="20,0,5,0"/>
+            <TextBlock Text="{Binding JumlahKredit, StringFormat='{}{0:C0}', ConverterCulture='id-ID'}" VerticalAlignment="Center" Foreground="DarkBlue"/>
+        </StackPanel>
+
+        
+        
+        <!--+ For the first row, devided inti  3 columns , Titlle, Excell description and Summary of Debet Credit-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*" />              
+                <ColumnDefinition Width="Auto" />               
+                <ColumnDefinition Width="*" />               
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>                    
+                        <RowDefinition Height="*"/>
+                    
+                    </Grid.RowDefinitions>                    
+                    <Grid Grid.Row="0" Background="#F8F9FA">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="DATA DARI EXCEL" FontWeight="Bold" FontSize="11" 
+                       Foreground="#555555" VerticalAlignment="Center" Margin="10,5"/>
+
+                        <!-- Kotak Pencarian Minimalis -->
+                        <Border Grid.Column="1" Background="White" BorderBrush="#DDDDDD" 
+                    BorderThickness="1" CornerRadius="12" Margin="5,3,10,3" 
+                    HorizontalAlignment="Right" Width="180">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="🔍" VerticalAlignment="Center" Margin="8,0,5,0" FontSize="10" Foreground="Gray"/>
+                                <TextBox Grid.Column="1" Text="{Binding KataKunciPencarian, UpdateSourceTrigger=PropertyChanged}" 
+                             BorderThickness="0" Background="Transparent" 
+                             VerticalContentAlignment="Center" FontSize="11" Height="22"
+                             Tag="Cari .." TextChanged="TextBox_TextChanged"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    
+                    <DataGrid x:Name="dgDataMentah" Grid.Row="1" ItemsSource="{Binding DaftarJurnal}"
+                  ColumnHeaderStyle="{StaticResource HeaderDataGridGlobal}"
+                  AutoGenerateColumns="False" CanUserAddRows="False"
+                CellEditEnding="dgDataMentah_CellEditEnding"
+                  AlternatingRowBackground="#F5F5F5" GridLinesVisibility="Horizontal"
+                  BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal, StringFormat=dd/MM/yyyy, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                            <DataGridTextColumn Header="Ref No" 
+                                                                     Binding="{Binding NoBukti ,UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                            <DataGridTextColumn Header="Kode" Binding="{Binding NoAkun,UpdateSourceTrigger=PropertyChanged}" Width="90"/>
+                            <DataGridTextColumn Header="Nama Akun" Binding="{Binding NamaAkun}" Width="*" ElementStyle="{StaticResource TextStyleWrapping}"/>
+                            <DataGridTextColumn Header="Keterangan" Binding="{Binding Keterangan,UpdateSourceTrigger=PropertyChanged}" Width="*" ElementStyle="{StaticResource TextStyleWrapping}"/>
+                            <DataGridTextColumn Header="Debet" Binding="{Binding Debit, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="100" ElementStyle="{StaticResource TextAngka}"/>
+                            <DataGridTextColumn Header="Kredit" Binding="{Binding Kredit, StringFormat=N2,UpdateSourceTrigger=PropertyChanged}" Width="100" ElementStyle="{StaticResource TextAngka}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+            <!-- between each  column there is splitter -->
+            <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Stretch" Background="#E0E0E0" Margin="2,0"/>
+
+            <!-- Right side devided vertically into two: Header Journal and Detail of the journal =>if we click a row in datagrid header -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                  </Grid.RowDefinitions>
+
+                
+                <Border Grid.Row="0" Background="#F1F1F1" BorderBrush="#DDDDDD" BorderThickness="0,0,0,1" Padding="8,4">
+                    <DockPanel>
+                        <TextBlock Text="HASIL: JURNAL HEADER" FontWeight="Bold" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="15,0,0,0">
+                            <RadioButton Content="Semua" 
+                         IsChecked="{Binding TampilkanHanyaBermasalah, Converter={StaticResource InverseBooleanConverter}, Mode=TwoWay}" 
+                         VerticalAlignment="Center" Margin="5,0"/>
+                            <RadioButton Content="Bermasalah (Tidak Balance)" 
+                         IsChecked="{Binding TampilkanHanyaBermasalah}" 
+                         Foreground="Red" FontWeight="Bold"
+                         VerticalAlignment="Center" Margin="10,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+
+
+                <DataGrid ItemsSource="{Binding DaftarJurnalHeader}" 
+                              SelectedItem="{Binding SelectedHeader}"
+                          IsReadOnly="True" 
+                          SelectionChanged="dgJurnalHeader_SelectionChanged"
+x:Name="dgJurnalHeader"
+                          ColumnHeaderStyle="{StaticResource HeaderDataGridGlobal}"
+                              AutoGenerateColumns="False" CanUserAddRows="False" Grid.Row="1" >
+                        <DataGrid.Columns>
+                        <DataGridTextColumn Header="Tanggal" Binding="{Binding JournalDate, StringFormat=dd/MM/yyyy}" Width="100"/>
+                        <DataGridTextColumn Header="No. Bukti" Binding="{Binding RefNo}" Width="*"/>
+                        <DataGridTextColumn Header="Total" Binding="{Binding TotalDebet, StringFormat=N0, ConverterCulture='id-ID'}" Width="100" ElementStyle="{StaticResource TextAngka}"/>
+                        <DataGridTextColumn Header="Total" Binding="{Binding TotalCredit, StringFormat=N0, ConverterCulture='id-ID'}" Width="100" ElementStyle="{StaticResource TextAngka}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                
+
+                <!-- SPLITTER HORISONTAL -->
+                <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" Background="#E0E0E0" Margin="0,2"/>
+
+                <!-- TABEL DETAIL -->
+                <GroupBox Header="Hasil: Jurnal Detail" Grid.Row="2">
+                    <DataGrid ItemsSource="{Binding DaftarJurnalDetail}" 
+                              ColumnHeaderStyle="{StaticResource HeaderDataGridGlobal}"
+                              AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Akun" Binding="{Binding AccountCode, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                            <DataGridTextColumn Header="Nama Akun" Binding="{Binding AccountName}" Width="80"/>
+                            <DataGridTextColumn Header="Debet" Binding="{Binding Debet, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}" Width="100" ElementStyle="{StaticResource TextAngka}"/>
+                            <DataGridTextColumn Header="Kredit" Binding="{Binding Credit, StringFormat=N0, UpdateSourceTrigger=PropertyChanged }" Width="100" 
+                                                ElementStyle="{StaticResource TextAngka}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </GroupBox>
+            </Grid>
+        </Grid>
+
+        <!-- TOOLBAR BAWAH (Tetap sama) -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <TextBlock Text="{Binding PesanStatus}" VerticalAlignment="Center" Margin="0,0,20,0" Foreground="DarkGreen" FontWeight="Bold"/>
+            <Button Content="1. Cek Kode Akun" Command="{Binding CekKodeAkun }"  Background="Coral" Foreground="White" BorderThickness="0" IsEnabled="{Binding IsDataReady}"/>
+            <Button Content="2. Import ke Database" Command="{Binding ImportKeDatabaseCommand}"  Background="LightSteelBlue" Foreground="White" BorderThickness="0" IsEnabled="{Binding IsDataReady}"/>
+
+            <Button Content="3. Cek Hasil Import di Buku Besar" Command="{Binding CekBukuBesarCommand}"  Background="#A8A745"  BorderThickness="0" IsEnabled="True"/>
+            <Button Content="Simpan ke Excell" Command="{Binding ExportKeExcelCommand}"  Background="LightSkyBlue" BorderThickness="0" IsEnabled="{Binding IsDataReady}" Margin="0,0,10,0"/>
+        </StackPanel>
+    </Grid>
+
+</UserControl>
