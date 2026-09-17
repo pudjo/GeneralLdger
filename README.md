@@ -5,7 +5,7 @@ A robust desktop-based **General Ledger (GL)** accounting system designed to str
 
 ## 🖼️ Application Preview
 <p align="center">
-  <img src="images/screenshot.png" alt="General Ledger UI" width="750"/>
+  <img src="Images/ScreenShhot.png" alt="General Ledger UI" width="750"/>
 </p>
 
 ## 🛠️ Technology Stack
