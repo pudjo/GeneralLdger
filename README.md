@@ -46,3 +46,5 @@ XAML (Extensible Application Markup Language) is a declarative XML-based languag
 
 
 ![Aplikasi General Ledger](Images/ScreenShhot.png)
+
+*There is Import from Excell, to import Financial data or  old data those excell version user want tuse excell 
