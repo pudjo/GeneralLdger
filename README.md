@@ -12,7 +12,6 @@ To maintain clarity in the application interface and reporting, the following st
 * **Neraca** $\rightarrow$ **Balance Sheet** (Financial position report generated via QuestPDF)
 * **Laba Rugi** $\rightarrow$ **Income Statement / Profit & Loss (P&L)** (Financial performance report)
 
----
 
 ## 🛠️ Technology Stack
 * **Framework:** .NET 8, WPF (Windows Presentation Foundation)
@@ -45,7 +44,10 @@ To maintain clarity in the application interface and reporting, the following st
 XAML (Extensible Application Markup Language) is a declarative XML-based language developed by Microsoft. It is used to initialize instances of objects and properties, and it is primarily utilized in WPF (Windows Presentation Foundation), UWP, and WinUI to design user interfaces (UI).
 
 
-![Aplikasi General Ledger](Images/ScreenShhot.png)
 
+---
+*Some Screen
+Chart Of Account
+![Aplikasi General Ledger](COA.png) 
 *There is Import from Excell, to import Financial data or  old data those excell version user want tuse excell 
 ![Imort Excell File ](impoertfroexcell.png)
