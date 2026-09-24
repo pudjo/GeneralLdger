@@ -46,8 +46,4 @@ XAML (Extensible Application Markup Language) is a declarative XML-based languag
 
 
 ---
-*Some Screen
-Chart Of Account
-![Aplikasi General Ledger](COA.png) 
-*There is Import from Excell, to import Financial data or  old data those excell version user want tuse excell 
-![Imort Excell File ](impoertfroexcell.png)
+📸 Application ScreenshotsHere are some previews of the application features and interfaces:Feature / InterfaceScreenshotCash Flow![Cash Flow](CashFlow.png)Customer Management![Customer Add](Customeradd.png)Opening Balance Input![Input Saldo Awal](Input%20Saldoawal.png)Journal Entry![Journal Entry](JournalEntry.png)Product Management![Product](Product.png)Excel Import![Import Excel](import%20Excell.png)Sales (Selling)![Selling](selling.png)Balance Sheet Report![Balance Sheet Report](LaporanBalace%20Sheey.png)Profit & Loss Report![Profit & Loss Report](LapornLabarugi.png)
