@@ -44,6 +44,17 @@ To maintain clarity in the application interface and reporting, the following st
 XAML (Extensible Application Markup Language) is a declarative XML-based language developed by Microsoft. It is used to initialize instances of objects and properties, and it is primarily utilized in WPF (Windows Presentation Foundation), UWP, and WinUI to design user interfaces (UI).
 
 
+📸 Application ScreenshotsHere 
+are some previews of the application features and interfaces:Feature / InterfaceScreenshot
+Cash Flow![Cash Flow](CashFlow.png)
+Customer Management![Customer Add](Customeradd.png)
+Opening Balance Input![Input Saldo Awal](Input%20Saldoawal.png)
+Journal Entry![Journal Entry](JournalEntry.png)
+Product Management![Product](Product.png)
+Excel Import![Import Excel](import%20Excell.png)
+Sales (Selling)![Selling](selling.png)
+Balance Sheet Report![Balance Sheet Report](LaporanBalace%20Sheey.png)
+Profit & Loss Report![Profit & Loss Report](LapornLabarugi.png)
 
----
-📸 Application ScreenshotsHere are some previews of the application features and interfaces:Feature / InterfaceScreenshotCash Flow![Cash Flow](CashFlow.png)Customer Management![Customer Add](Customeradd.png)Opening Balance Input![Input Saldo Awal](Input%20Saldoawal.png)Journal Entry![Journal Entry](JournalEntry.png)Product Management![Product](Product.png)Excel Import![Import Excel](import%20Excell.png)Sales (Selling)![Selling](selling.png)Balance Sheet Report![Balance Sheet Report](LaporanBalace%20Sheey.png)Profit & Loss Report![Profit & Loss Report](LapornLabarugi.png)
+
+(import%20Excell.png)Sales (Selling)![Selling](selling.png)Balance Sheet Report![Balance Sheet Report](LaporanBalace%20Sheey.png)Profit & Loss Report![Profit & Loss Report](LapornLabarugi.png)
