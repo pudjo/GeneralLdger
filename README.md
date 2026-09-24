@@ -5,13 +5,6 @@ A robust desktop-based **General Ledger (GL)** accounting system designed to str
 
 ---
 
-## 📚 Key Accounting Terminology
-To maintain clarity in the application interface and reporting, the following standard terms are used throughout the project:
-
-* **Akun** $\rightarrow$ **Account Code** (Core structure for charting accounts)
-* **Neraca** $\rightarrow$ **Balance Sheet** (Financial position report generated via QuestPDF)
-* **Laba Rugi** $\rightarrow$ **Income Statement / Profit & Loss (P&L)** (Financial performance report)
-
 
 ## 🛠️ Technology Stack
 * **Framework:** .NET 8, WPF (Windows Presentation Foundation)
